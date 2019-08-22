@@ -1,0 +1,10 @@
+templateScript: /jokes-module-cli/templates/pages/dummy-page.ftl
+renderType: freemarker
+visible: true
+dialog: jokes-module-cli:pages/dummy-page-properties
+areas:
+  main:
+    renderType: freemarker
+    availableComponents:
+      dummy-component:
+        id: jokes-module-cli:components/dummy-component

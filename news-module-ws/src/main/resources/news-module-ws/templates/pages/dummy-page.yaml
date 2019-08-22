@@ -1,0 +1,10 @@
+templateScript: /news-module-ws/templates/pages/dummy-page.ftl
+renderType: freemarker
+visible: true
+dialog: news-module-ws:pages/dummy-page-properties
+areas:
+  main:
+    renderType: freemarker
+    availableComponents:
+      dummy-component:
+        id: news-module-ws:components/dummy-component

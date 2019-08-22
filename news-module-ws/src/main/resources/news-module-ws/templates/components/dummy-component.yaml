@@ -1,0 +1,2 @@
+templateScript: /news-module-ws/templates/components/dummy-component.ftl
+renderType: freemarker

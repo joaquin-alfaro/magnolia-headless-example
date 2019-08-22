@@ -1,0 +1,240 @@
+appClass: info.magnolia.ui.contentapp.ContentApp
+class: info.magnolia.ui.contentapp.ContentAppDescriptor
+icon: icon-app
+subApps:
+  browser:
+    subAppClass: info.magnolia.ui.contentapp.browser.BrowserSubApp
+    class: info.magnolia.ui.contentapp.browser.BrowserSubAppDescriptor
+
+    # Action bar
+    actionbar:
+      defaultAction: editNews
+      sections:
+        # Actions allowed on root
+        - name: root
+          groups:
+            - name: addActions
+              items:
+                - name: addNews
+            - name: importExportActions
+              items:
+                - name: export
+                - name: import
+          availability:
+            nodes: false
+            root: true
+        # Actions allowed for News
+        - name: new
+          groups:
+            - name: editActions
+              items:
+                - name: editNews
+                - name: confirmDeleteNews
+                - name: duplicate
+            - name: importExportActions
+              items:
+                - name: export
+                - name: import
+            - name: activationActions
+              items:
+                - name: activate
+                - name: deactivate
+                - name: activateDeleted
+          availability:
+            nodeTypes:
+              - mgnl:news
+
+    actions:
+      # Actions related with News
+      addNews:
+        subAppId: detail-news
+        icon: icon-add-item
+        nodeType: mgnl:news
+        appName: news
+        class: info.magnolia.ui.contentapp.detail.action.CreateItemActionDefinition
+        availability:
+          root: true
+      editNews:
+        subAppId: detail-news
+        icon: icon-edit
+        appName: news
+        class: info.magnolia.ui.contentapp.detail.action.EditItemActionDefinition
+        availability:
+          writePermissionRequired: true
+          rules:
+            IsNotDeletedRule:
+              implementationClass: info.magnolia.ui.framework.availability.IsNotDeletedRule
+          nodeTypes:
+            - mgnl:news
+      confirmDeleteNews:
+        class: info.magnolia.ui.framework.action.ConfirmationActionDefinition
+        icon: icon-delete
+        successActionName: deleteNews
+        availability:
+          multiple: true
+          writePermissionRequired: true
+          rules:
+            IsNotDeletedRule:
+              implementationClass: info.magnolia.ui.framework.availability.IsNotDeletedRule
+
+      deleteNews:
+        icon: icon-delete
+        class: info.magnolia.ui.framework.action.MarkNodeAsDeletedActionDefinition
+        command: markAsDeleted
+        availability:
+          writePermissionRequired: true
+
+      # Common actions
+      export:
+        icon: icon-export
+        class: info.magnolia.ui.framework.action.OpenExportDialogActionDefinition
+        dialogName: ui-admincentral:export
+      import:
+        name: import
+        icon: icon-import
+        class: info.magnolia.ui.framework.action.OpenCreateDialogActionDefinition
+        dialogName: ui-admincentral:import
+        availability:
+          writePermissionRequired: true
+      activate:
+        catalog: versioned
+        class: info.magnolia.ui.framework.action.ActivationActionDefinition
+        command: activate
+        icon: icon-publish
+        availability:
+          writePermissionRequired: true
+          rules:
+            IsNotDeletedRule:
+              implementationClass: info.magnolia.ui.framework.availability.IsNotDeletedRule
+      deactivate:
+        command: deactivate
+        icon: icon-unpublish
+        catalog: versioned
+        class: info.magnolia.ui.framework.action.DeactivationActionDefinition
+        availability:
+          writePermissionRequired: true
+          rules:
+            IsNotDeletedRule:
+              implementationClass: info.magnolia.ui.framework.availability.IsNotDeletedRule
+            IsPublishedRule:
+              implementationClass: info.magnolia.ui.framework.availability.IsPublishedRule
+      activateDeleted:
+        catalog: versioned
+        class: info.magnolia.ui.framework.action.ActivationActionDefinition
+        command: activate
+        icon: icon-publish
+        asynchronous: true
+        availability:
+          writePermissionRequired: true
+          multiple: true
+          rules:
+            IsDeletedRule:
+              implementationClass: info.magnolia.ui.framework.availability.IsDeletedRule
+      duplicate:
+        class: info.magnolia.ui.framework.action.DuplicateNodeActionDefinition
+        icon: icon-duplicate
+        availability:
+          writePermissionRequired: true
+          rules:
+            IsNotDeletedRule:
+              implementationClass: info.magnolia.ui.framework.availability.IsNotDeletedRule
+    workbench:
+      dropConstraintClass: info.magnolia.ui.workbench.tree.drop.AlwaysTrueDropConstraint
+      editable: false
+      contentViews:
+        - name: tree
+          class: info.magnolia.ui.workbench.tree.TreePresenterDefinition
+          columns: &myColumns
+            - name: name
+              editable: false
+              sortable: true
+              propertyName: jcrName
+              class: info.magnolia.ui.workbench.column.definition.PropertyColumnDefinition
+            - name: publishDate
+              editable: false
+              sortable: true
+              propertyName: publicationDate
+              class: info.magnolia.ui.workbench.column.definition.PropertyColumnDefinition
+            - name: status
+              width: 45
+              displayInChooseDialog: false
+              formatterClass: info.magnolia.ui.workbench.column.StatusColumnFormatter
+              class: info.magnolia.ui.workbench.column.definition.StatusColumnDefinition
+            - name: moddate
+              width: 160
+              sortable: true
+              displayInChooseDialog: false
+              formatterClass: info.magnolia.ui.workbench.column.DateColumnFormatter
+              propertyName: mgnl:lastModified
+              class: info.magnolia.ui.workbench.column.definition.MetaDataColumnDefinition
+        - name: list
+          class: info.magnolia.ui.workbench.list.ListPresenterDefinition
+          columns: *myColumns
+        - name: search
+          class: info.magnolia.ui.workbench.search.SearchPresenterDefinition
+          columns: *myColumns
+
+
+    imageProvider:
+      class: info.magnolia.ui.imageprovider.definition.ConfiguredImageProviderDefinition
+      imageProviderClass: info.magnolia.ui.imageprovider.DefaultImageProvider
+      originalImageNodeName: jcr:content
+
+    contentConnector:
+      includeProperties: false
+      workspace: news
+      rootPath: /
+      defaultOrder: name
+      nodeTypes:
+        - name: mgnl:news
+          icon: icon-news
+
+  # Form for News detail
+  detail-news:
+    subAppClass: info.magnolia.ui.contentapp.detail.DetailSubApp
+    class: info.magnolia.ui.contentapp.detail.DetailSubAppDescriptor
+    actions:
+      commit:
+        implementationClass: info.magnolia.ui.form.action.SaveFormAction
+        class: info.magnolia.ui.form.action.SaveFormActionDefinition
+      cancel:
+        class: info.magnolia.ui.form.action.CancelFormActionDefinition
+    editor:
+      actions:
+        - name: commit
+        - name: cancel
+      form:
+        tabs:
+          - name: news
+            fields:
+              - name: author
+                fieldType: text
+                required: true
+              - name: name
+                fieldType: text
+                required: true
+              - name: publicationDate
+                fieldType: date
+              - name: title
+                fieldType: text
+                i18n: true
+              - name: summary
+                fieldType: text
+                i18n: true
+                rows: 3
+              - name: image
+                fieldType: link
+                targetWorkspace: dam
+                appName: assets
+                identifierToPathConverter:
+                  class: info.magnolia.dam.app.assets.field.translator.AssetCompositeIdKeyTranslator
+                contentPreviewDefinition:
+                  contentPreviewClass: info.magnolia.dam.app.ui.field.DamFilePreviewComponent
+              - name: detail
+                class: info.magnolia.ui.form.field.definition.RichTextFieldDefinition
+                i18n: true
+      nodeType:
+        icon: icon-items
+        name: mgnl:news
+    contentConnector:
+      workspace: news

@@ -1,0 +1,2 @@
+templateScript: /jokes-module-cli/templates/components/dummy-component.ftl
+renderType: freemarker

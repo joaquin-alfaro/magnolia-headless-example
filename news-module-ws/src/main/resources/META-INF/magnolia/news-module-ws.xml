@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+  <name>news-module-ws</name>
+  <displayName>${project.name}</displayName>
+  <description>${project.description}</description>
+  <class>news.org.ws.NewsWs</class>
+  <versionHandler>news.org.ws.setup.NewsWsVersionHandler</versionHandler>
+  <version>${project.version}</version>
+
+  <!-- For more information on module descriptor configuration options -->
+  <!-- https://documentation.magnolia-cms.com/display/DOCS/XML-based+module+descriptor -->
+
+  <components>
+    <id>main</id>
+    <component>
+      <type>news.org.ws.service.NewsService</type>
+      <implementation>news.org.ws.service.NewsService</implementation>
+    </component>
+  </components>
+
+  <dependencies>
+    <dependency>
+      <name>core</name>
+      <version>*</version>
+    </dependency>
+    <dependency>
+      <name>news-module-app</name>
+      <version>*</version>
+    </dependency>
+    <dependency>
+      <name>jokes-module-cli</name>
+      <version>*</version>
+    </dependency>
+  </dependencies>
+</module>

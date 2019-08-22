@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+  <name>news-module-app</name>
+  <displayName>${project.name}</displayName>
+  <description>${project.description}</description>
+  <class>news.org.app.NewsApp</class>
+  <versionHandler>news.org.app.setup.NewsAppVersionHandler</versionHandler>
+  <version>${project.version}</version>
+
+  <!-- For more information on module descriptor configuration options -->
+  <!-- https://documentation.magnolia-cms.com/display/DOCS/XML-based+module+descriptor -->
+
+  <dependencies>
+    <dependency>
+      <name>core</name>
+      <version>*</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <name>magnolia</name>
+      <workspaces>
+        <workspace>news</workspace>
+      </workspaces>
+      <nodeTypeFile>/mgnl-nodetypes/news-module-app-nodetypes.xml</nodeTypeFile>
+    </repository>
+  </repositories>
+</module>
