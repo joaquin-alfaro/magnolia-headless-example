@@ -77,15 +77,16 @@ module-name: news-module-cli
 ```
 
 # Configuration
-###Langs
+### Langs
 Allowed languages are configured in *Web dev-site:i18n*
 
 > More info here https://documentation.magnolia-cms.com/display/DOCS61/Language+configuration
-###Cache
+### Cache
 Cache for jokes is configured in *config:/modules/cache/config/cacheFactory/caches*  
 > More info here https://documentation.magnolia-cms.com/display/DOCS61/Caching+arbitrary+objects
-###Rest endpoint
+### Rest endpoint
 Rest endpoint is configured in *config:/modules/news-module-ws/config/rest-endpoints*
 > More info here https://documentation.magnolia-cms.com/display/DOCS61/How+to+create+a+custom+Java-based+REST+endpoint
-###Rest cli
+### Rest cli
 The client with api.icndb.com is configured at *config:/modules/jokes-module-cli/rest-client*
+> More infor here https://documentation.magnolia-cms.com/display/DOCS61/REST+client+module
