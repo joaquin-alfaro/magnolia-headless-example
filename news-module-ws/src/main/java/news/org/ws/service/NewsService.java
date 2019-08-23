@@ -239,7 +239,7 @@ public class NewsService {
 
         int separator = fullName.indexOf(" ");
         String firstName = (separator < 0)? fullName: fullName.substring(0, separator);
-        String lastName = (separator < 0)? "": fullName.substring(separator + 1);
+        String lastName = (separator < 0)? null: fullName.substring(separator + 1);
 
         Joke joke = icndbJokesService.getJoke(firstName, lastName);
 
